@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content_1 %}          
+    {% if not current_user.is_authenticated %}
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/login">Login</a>
+            <a class="nav-item nav-link" href="/register">Register</a>
+        </div>
+    {% else %}   
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/logout">Logout {{current_user.FirstName}} </a>
+        </div>
+        <div class="navbar-nav">
+            <ul class="dots">
+                    <li>
+                        <a href="/notification">
+                        <span class="glyphicon glyphicon-time"><mark style="top: 2px;text-align: center;">{{current_user.notification}}</mark></span>
+                       </a>
+                    </li>
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+	<issue class="media content-section">
+	    <div class="media-body">
+	        <p class="mr-2" >
+				<p>Title - {{post.title}}</p>
+				<p>Description - {{post.Description}}</br> Assigned to - 
+	           			{{ post.AssignedTo}}</br>posted on -{{post.date_posted}}</p>
+			</p>
+			{% if current_user.is_authenticated %}
+			<small class="text-muted">
+            		<a class="ml-2" href="{{url_for('update_post',post_id=post.id)}}">update</a>
+            		<a class="button" href="#popup1" >delete</a>
+                        <div id="popup1" class="overlay">
+                            <div class="popup">
+                                <a class="close" href="#">&times;</a>
+                                Press delete to delete  the {{post.title}} post.
+                                <div class="content">
+                              <button onclick="myFunction()">delete</button>
+
+                        <p id="demo"></p>
+                                </div>
+                            </div>
+                        </div>
+<script>
+
+function myFunction() {
+  window.open("{{url_for('delete_post',post_id=post.id)}}","_self");
+}
+</script>
+        		</small><br />
+        	{% endif %}
+		</div>
+
+	</issue>
+
+{% endblock content %}
+

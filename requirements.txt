@@ -1,0 +1,7 @@
+Flask_Bcrypt
+Flask_SQLAlchemy
+WTForms
+Flask
+Flask_WTF
+Flask-Migrate
+email_validator

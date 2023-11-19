@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block content_1 %}          
+    {% if not current_user.is_authenticated %}
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/login">Login</a>
+            <a class="nav-item nav-link" href="/register">Register</a>
+        </div>
+    {% else %}   
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/logout">Logout {{current_user.FirstName}} </a>
+        </div>
+        <div class="navbar-nav">
+            <ul class="dots">
+                    <li>
+                        <a href="/notification">
+                        <span class="glyphicon glyphicon-time"><mark style="top: 2px;text-align: center;">{{current_user.notification}}</mark></span>
+                       </a>
+                    </li>
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+	    {% for i in user %}
+	        <issue class="media content-section">
+	          <div class="media-body">
+	             <a class="mr-2" href="#">  {{ i.FirstName +" "+ i.LastName }} </a>
+	            <p class="account-content">emailid - {{ i.email }}</p>
+	            <p>username - {{ i.username }}</p>
+	           	{% for p in post %}
+	           		{% if p.Createdby == i.username %}
+	           			<a class="article-title" href="{{ url_for('post',post_id=p.id)}}">Title - {{p.title}}</a>
+	           			<p>Description - {{p.Description}}</br> Assigned to - 
+	           			{{ p.AssignedTo}}</br>
+	           			Status - 
+	           			{% if p.Status == True %}
+	           				Open
+	           			{% else %}
+	           				Close
+	           			{% endif %}&emsp;&emsp;&emsp;&emsp;&emsp;
+	           			Posted on -{{p.date_posted.date()}} 
+	           			
+	           		{% if current_user.username == i.username %}
+	           		</br>
+
+	            <small class="text-muted">
+            		<a class="ml-2" href="{{ url_for('post',post_id=p.id)}}">edit</a>
+        		</small><br />
+
+        		{% endif %}
+        		<hr>
+	           		{% endif %}
+	           	{% endfor %}
+	            
+	          </div>
+	        </issue>
+	    {% endfor %}
+{% endblock content %}
